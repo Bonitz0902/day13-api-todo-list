@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addTodoItem } from "./todoListSlice";
+import * as todoApi from "../api/todoApi";
+
 
 const TodoGenerator = () => {
     const [itemInput, setItemInput] = useState("");
@@ -10,15 +12,14 @@ const TodoGenerator = () => {
         setItemInput(event.target.value);
     };
 
-    const addItem = () => {
+    const addItem = async () => {
         if (isValidInput()) {
-            dispatch(
-                addTodoItem({
-                    id: Date.now().toString(),
-                    text: itemInput,
-                    done: false,
-                })
-            );
+            const response = await todoApi.createTodoTask({
+                text: itemInput,
+                done: false,
+            });
+            
+            dispatch(addTodoItem(response.data));
             setItemInput("");
         } else {
             alert("Oops! It seems like your input is invalid. Please enter some text to continue.");
