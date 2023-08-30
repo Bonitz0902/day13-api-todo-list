@@ -1,5 +1,6 @@
 import { useDispatch } from "react-redux";
 import { deleteTodoItem, toggleTodoItem } from "./todoListSlice";
+import { updateTodoTask } from "../api/todoApi";
 
 const TodoItem = (props) => {
     const dispatch = useDispatch();
@@ -21,6 +22,13 @@ const TodoItem = (props) => {
         }
     };
 
+    const updateItem = () => {
+        const updatedText = window.prompt("Enter the updated task text:", props.todoItem.text);
+        if(updatedText != null){
+            dispatch(updateTodoTask(props.todoItem.id, updatedText));
+        }
+    };
+
     return (
         <>
             <div className="todo-item">
@@ -38,7 +46,13 @@ const TodoItem = (props) => {
                     <button className="delete-button" onClick={deleteItem}>
                         x
                     </button>
+
+                     
+                        
                 )}
+                <button className="update-button" onClick={updateItem}>
+                            Update
+                    </button>
             </div>
         </>
     );
